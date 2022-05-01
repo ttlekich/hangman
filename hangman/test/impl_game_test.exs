@@ -14,8 +14,13 @@ defmodule HangmanImplGameTest do
     assert game.letters == ["w", "o", "m", "b", "a", "t"]
   end
 
-  test "new game returns letters in lowercase" do
-    game = Game.new_game()
-    Enum.each(game.letters, fn x -> assert String.downcase(x) == x end)
+  ### make_move
+  test "state doesn't change if a game is won or lost" do
+    for state <- [:won, :lost] do
+      game = Game.new_game()
+      game = Map.put(game, :game_state, state)
+      {new_game, _tally} = Game.make_move(game, "x")
+      assert new_game == game
+    end
   end
 end
